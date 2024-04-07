@@ -38,11 +38,45 @@ gpg --full-gen-key
 ```
 * Choose RSA with 4096 bits, never expire and provide your name and email address.
 
+## Creating a Package
+* Create a container
+```
+mkdir helloworld
+mkdir helloworld/DEBIAN
+cd helloworld
+```
+* Create file "control" in the DEBIAN folder containing application information:
+```
+Package: helloworld
+Version: 1.0
+Maintainer: Scaremonger
+Architecture: all
+Description: Hello World Example
+```
+* Adding files to your package
+Any files you add to the package will be copied using the same relative paths.
+```
+mkdir helloworld/usr/local/bin
+cp /usr/local/bin/helloworld.sh helloworld/usr/local/bin/
+```
+* Build the package
+```
+dpkg-deb --build helloworld
+```
+* You can test installation using the following:
+```
+dpkg -i helloworld.deb
+```
+## Adding maintainer scripts
+You can add scripts into the DEBIAN folder called: preinst, postinst, prerm and postrm, which will be executed at the appropriate time during installation. Make sure you add a shebang to the file.
+
 ## Publishing a Package
-* Copy your *.deb package to the folder
+* Copy your *.deb package to the ppa folder
 * Open a terminal to the repository and run the ./build.sh script using your gpg email address as an argumment; the script will do the rest.
 * Publish your repository to Github
 
 # References
 * https://assafmo.github.io/2019/05/02/ppa-repo-hosted-on-github.html
+* https://www.iodigital.com/en/history/intracto/creating-debianubuntu-deb-packages
+
 
